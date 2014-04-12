@@ -1,0 +1,55 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Tauri', sans-serif;
+    font-weight: 300;
+    font-size: 1em;
+    background-size: cover;
+}
+
+#main, #flashCover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#flashCover {
+    background-color: #fff;
+}
+
+#weather-info {
+    width: 300px;
+    position: relative;
+    margin: 25px;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+}
+
+#weather-info .wtrends
+{
+    display: block;
+    margin-top: 20px;
+    font-size: .8em;
+    color: #fff;
+    text-decoration: none;
+}
+
+#weather-info .temp {
+    font-size: 6em;
+    text-align: center;
+}
+
+#weather-info .temp:after {
+    content: "˚";
+}
+
+#weather-info .desc, #time {
+    font-size: 1.5em;
+    text-align: center;
+}
