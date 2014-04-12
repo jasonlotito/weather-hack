@@ -1,0 +1,54 @@
+{
+  "name": "Weather hack",
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "description": "Weather on your browser",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+
+  "chrome_url_overrides": {
+      "newtab": "newtab.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*",
+                  "https://*/*"],
+      "js": [
+        "js/content_script.js"
+      ],
+
+      "css": [
+        "css/content_script.css"
+      ],
+      
+      "run_at": "document_end"
+    }
+  ],
+
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+
+  "permissions": [
+    "http://*/*", 
+    "https://*/*", 
+    "tabs", 
+    "storage",
+    "management"
+  ],
+
+  "web_accessible_resources": [
+    "img/*.jpg",
+    "img/*.png",
+    "js/*.map",
+    "js/*.js",
+    "js/*/*.js",
+    "ts/*.ts",
+    "css/*",
+    "css/*/*"
+  ]
+}
