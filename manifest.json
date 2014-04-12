@@ -38,6 +38,7 @@
     "https://*/*", 
     "tabs", 
     "storage",
+    "geolocation",
     "management"
   ],
 
