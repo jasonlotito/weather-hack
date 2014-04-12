@@ -18,6 +18,8 @@
       "matches": ["http://*/*",
                   "https://*/*"],
       "js": [
+        "js/jquery.js",
+        "js/weather-trends.js",
         "js/content_script.js"
       ],
 
@@ -25,7 +27,7 @@
         "css/content_script.css"
       ],
       
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
 

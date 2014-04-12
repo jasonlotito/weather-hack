@@ -1,0 +1,31 @@
+
+#weather-hack {
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 180px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 0 0 10px;
+    z-index: 99999;
+}
+
+
+#weather-hack .weatherhack-weather-icon-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0 0 1px #000 inset;
+    text-align: center;
+    cursor: pointer;
+}
+
+#weather-hack .weatherhack-desc {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
