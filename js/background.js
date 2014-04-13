@@ -71,6 +71,10 @@
     w.getCurrentWeather(loc || location.get(), function(data){
       localStorage['weather-trends-data'] = JSON.stringify(data);
 
+      if(!data.forecast){
+        return;
+      }
+
       var currentWeather = data.forecast[0];
       var currentWeatherIcon = currentWeather.iconBase;
 
