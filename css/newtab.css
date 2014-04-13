@@ -21,6 +21,8 @@ html, body {
 }
 
 #weather-info {
+    display: inline-block;
+    float:left;
     width: 300px;
     position: relative;
     margin: 25px;
@@ -52,4 +54,16 @@ html, body {
 #weather-info .desc, #time {
     font-size: 1.5em;
     text-align: center;
+}
+
+#searchContainer {
+    float: left;
+    display: inline-block;
+    margin-top: 25px;
+    right: 25px;
+    width: auto;
+}
+
+#searchContainer input {
+    width: 100%;
 }

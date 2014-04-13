@@ -1,22 +1,23 @@
 
 $((function(){
-  // <link href='//fonts.googleapis.com/css?family=Tauri' rel='stylesheet' type='text/css'>
-  var font = document.createElement('link');
-  font.href = '//fonts.googleapis.com/css?family=Tauri';
-  font.rel = 'stylesheet';
-  font.type = 'text/css';
-  document.head.appendChild(font);
 
-  var isShowing = true;
+  function WeatherHack() {
 
-  var w = new WeatherTrends();
-  w.getCurrentWeather(function(data){
+    var font = document.createElement('link'),
+      that = this;
+    font.href = '//fonts.googleapis.com/css?family=Tauri';
+    font.rel = 'stylesheet';
+    font.type = 'text/css';
+    document.head.appendChild(font);
+
+    var isShowing = true;
+
+    // Build initial overlay
 
     var mouseIsDown = false,
       initialOffsetX = 0,
-      initialOffsetY = 0,
-      currentWeather = data.forecast[0],
-      currentWeatherIcon = currentWeather.iconBase;
+      initialOffsetY = 0;
+
 
     this.root = document.createElement('div');
     this.root.id = 'weather-hack-root';
@@ -48,27 +49,25 @@ $((function(){
     this.weatherOverlay.id = "weather-hack";
     var img = document.createElement('img');
 
-    img.src = chrome.extension.getURL('img/weather/colored/' + WeatherTrends.mapWT2Hack(currentWeatherIcon) + '.png');
+  //  img.src = chrome.extension.getURL('img/weather/colored/' + WeatherTrends.mapWT2Hack(currentWeatherIcon) + '.png');
     img.style.width = '160px';
     img.style.margin = '10px';
-
-
-    var text = WeatherTrends.formatTemp(currentWeather.avgTempF) + '˚ and ' + currentWeather.wx;
+    img.id = 'weather-hack-weather-image';
 
     var desc = document.createElement('p');
     var upUrl = chrome.extension.getURL('img/up.png'),
-        downUrl = chrome.extension.getURL('img/down.png');
+      downUrl = chrome.extension.getURL('img/down.png');
 
     var closeIcon = document.createElement('img'),
       openIcon = document.createElement('img'),
       $closeIcon = $(closeIcon),
       $openIcon = $(openIcon);
-    closeIcon.className = 'weatherhack-weather-icon-close';
-    openIcon.className = 'weatherhack-weather-icon-close';
-    closeIcon.src = upUrl;
-    openIcon.src = downUrl;
-    $openIcon.hide(),
-    shouldBeOpened = true;
+      closeIcon.className = 'weatherhack-weather-icon-close';
+      openIcon.className = 'weatherhack-weather-icon-close';
+      closeIcon.src = upUrl;
+      openIcon.src = downUrl;
+      $openIcon.hide(),
+      shouldBeOpened = true;
 
 
     var clickUp = function(e){
@@ -97,23 +96,23 @@ $((function(){
       ! shouldBeOpened && hideWeatherDialog();
     };
 
-    function showWeatherDialog()
+    var showWeatherDialog = function()
     {
       isShowing = true;
-      $(this.weatherOverlay).show();
-      this.root.style.top = '10px';
-      this.root.style.right = '10px';
-      this.root.style.left = "";
-    }
+      $(that.weatherOverlay).show();
+      that.root.style.top = '10px';
+      that.root.style.right = '10px';
+      that.root.style.left = "";
+    };
 
-    function hideWeatherDialog()
+    var hideWeatherDialog = function()
     {
       isShowing = false;
-      $(this.weatherOverlay).hide();
-      this.root.style.top = '10px';
-      this.root.style.right = '10px';
-      this.root.style.left = "";
-    }
+      $(that.weatherOverlay).hide();
+      that.root.style.top = '10px';
+      that.root.style.right = '10px';
+      that.root.style.left = "";
+    };
 
     $closeIcon.on('click', clickUp.bind(this));
 
@@ -121,7 +120,7 @@ $((function(){
     $openIcon.on('mouseover', closeHoverEvent.bind(this));
     $openIcon.on('mouseout', closeBlurEvent.bind(this));
 
-    var text = document.createTextNode(text)
+    var text = document.createTextNode('')
     desc.appendChild(text);
     desc.className = 'weatherhack-desc';
 
@@ -133,5 +132,27 @@ $((function(){
     this.root.appendChild(this.weatherOverlay);
 
     document.body.appendChild(this.root);
-  });
+
+    var $weatherDescription = $('#weather-hack .weatherhack-desc');
+    var $weatherIcon = $('#weather-hack-weather-image');
+
+    var w = new WeatherTrends();
+
+    var updateWeatherDisplay = function(){
+      w.getCachedWeatherData(function(data){
+        var currentWeather = data.forecast[0];
+        var currentWeatherIcon = currentWeather.iconBase;
+
+        var descriptionText = WeatherTrends.formatTemp(currentWeather.avgTempF) + '˚ and ' + currentWeather.wx;
+
+        $weatherDescription.text(descriptionText);
+        $weatherIcon[0].src = chrome.extension.getURL('img/weather/colored/' + WeatherTrends.mapWT2Hack(currentWeatherIcon) + '.png');
+      });
+    }
+
+    setInterval(updateWeatherDisplay.bind(this), 60000 * 5);
+    updateWeatherDisplay();
+  }
+
+  new WeatherHack();
 }));

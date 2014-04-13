@@ -15,24 +15,22 @@ setTimeout(function(){
 }, 250)
 
 var w = new WeatherTrends();
-w.getCurrentWeather(function(weather){
+var updateCachedWeatherData = function() {
+  w.getCachedWeatherData(function(weather){
 
-  var currentWeather = weather.forecast[0];
+    var currentWeather = weather.forecast[0];
 
-  $temp.text(WeatherTrends.formatTemp(currentWeather.avgTempF));
-  $desc.text(currentWeather.wx);
+    $temp.text(WeatherTrends.formatTemp(currentWeather.avgTempF));
+    $desc.text(currentWeather.wx);
 
+    $(function() {
+      var BV = new $.BigVideo({doLoop: true});
+      BV.init();
+      BV.show(chrome.extension.getURL('/img/new-tab/' + WeatherTrends.mapWT2HackVideo(currentWeather.wx)));
+    });
 
+  });
+};
 
-//  for(var x in weather.forecast) {
-//    var hour = weather.forecast[x];
-//
-//    $hour.append('<img src="http://www.weathertrends360.com/images/wxIcons/' + hour.iconLg + '">')
-//  }
-});
-
-$(function() {
-  var BV = new $.BigVideo({doLoop: true});
-  BV.init();
-  BV.show(chrome.extension.getURL('/img/new-tab/Sunny/Sunny Clouds.mp4'));
-});
+setInterval(updateCachedWeatherData, 60000);
+updateCachedWeatherData();

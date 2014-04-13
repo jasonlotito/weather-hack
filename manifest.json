@@ -32,7 +32,11 @@
   ],
 
   "background": {
-    "scripts": ["js/background.js"]
+    "scripts": [
+      "js/jquery.js",
+      "js/weather-trends.js",
+      "js/background.js"
+    ]
   },
 
   "permissions": [

@@ -5,6 +5,7 @@ function WeatherTrends ()
 }
 
 WeatherTrends.mapping = {
+  'clear':'clear_night',
   'blowingdust': 'windy',
   'cloudy': 'sunny',
   'cloudy-windy': 'windy',
@@ -54,10 +55,30 @@ WeatherTrends.mapping = {
   'wintry-mix': 'snow'
 };
 
+WeatherTrends.videoMapping = {
+  "snowing":"Snow/Snow.mp4",
+  "sunny":"Sunny/Sunny.mp4",
+  "sleet":"Snow/Snow.mp4",
+  "windy":"Cloudy/Cloudy.mp4",
+  "snow": "Snow/Snow.mp4",
+  "rain":"Rain/Rain.mp4",
+  "partly_cloud":"Cloudy/Cloudy.mp4",
+  "thunder":"Rain/Rain.mp4",
+  "night_foggy":"Night/Night.mp4",
+  "clear_night":"Night/Night.mp4"
+};
+
 WeatherTrends.prototype.getCurrentWeather = function(cb)
 {
   $.get('http://www.weathertrends360.com/data/forecast/hourly-1day?key=g2frbigj3c8o4nl08mvizd5d9nrj0dzqfehqwyazahne60odvj&l=Bethlehem,PA&fmt=json', function(data){
     cb(data);
+  });
+};
+
+WeatherTrends.prototype.getCachedWeatherData = function(cb)
+{
+  chrome.extension.sendRequest({method: "getWeatherData"}, function(response) {
+    cb(response);
   });
 };
 
@@ -68,10 +89,11 @@ WeatherTrends.formatTemp = function( temp )
 
 WeatherTrends.mapWT2Hack = function( wtName )
 {
-  return WeatherTrends.mapping[wtName];
+  return WeatherTrends.mapping[wtName.toLowerCase()];
 };
 
 WeatherTrends.mapWT2HackVideo = function ( wtName )
 {
-
+  console.log(wtName, WeatherTrends.videoMapping);
+  return WeatherTrends.videoMapping[WeatherTrends.mapWT2Hack(wtName)];
 };
