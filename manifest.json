@@ -2,10 +2,12 @@
   "name": "Weather hack",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "description": "Weather on your browser",
+  "description": "Weather on your browser, creating during Lehigh Valley Hack 2014 - #lvhack",
   "version": "1.0",
 
   "browser_action": {
+    "default_title": "Weather Hack",
+    "default_icon":"img/16icon.png",
     "default_popup": "popup.html"
   },
 
@@ -38,14 +40,14 @@
       "js/background.js"
     ]
   },
-
   "permissions": [
     "http://*/*", 
     "https://*/*", 
     "tabs", 
     "storage",
     "geolocation",
-    "management"
+    "management",
+    "notifications"
   ],
 
   "web_accessible_resources": [
@@ -57,5 +59,10 @@
     "ts/*.ts",
     "css/*",
     "css/*/*"
-  ]
+  ],
+  "icons": {
+    "16": "img/16icon.png",
+    "48": "img/48icon.png",
+    "128": "img/128icon.png"
+  }
 }

@@ -1,36 +1,42 @@
-$hour = $('#hour');
-$temp = $('#weather-info .temp');
-$desc = $('#weather-info .desc');
-$time = $('#time')
+$(function(){
+  $hour = $('#hour');
+  $temp = $('#weather-info .temp');
+  $desc = $('#weather-info .desc');
+  $time = $('#time')
 
-var timeFormat = 'h:mm a';
-$time.text(moment().format(timeFormat));
 
-setInterval(function(){
+
+  var timeFormat = 'h:mm a';
   $time.text(moment().format(timeFormat));
-}, 1000);
 
-setTimeout(function(){
-  $('#flashCover').fadeOut( );
-}, 250)
+  setInterval(function(){
+    $time.text(moment().format(timeFormat));
+  }, 1000);
 
-var w = new WeatherTrends();
-var updateCachedWeatherData = function() {
-  w.getCachedWeatherData(function(weather){
+  setTimeout(function(){
+    $('#flashCover').fadeOut( );
+  }, 250)
 
-    var currentWeather = weather.forecast[0];
+  var w = new WeatherTrends();
+  var updateCachedWeatherData = function() {
+    w.getCachedWeatherData(function(weather){
 
-    $temp.text(WeatherTrends.formatTemp(currentWeather.avgTempF));
-    $desc.text(currentWeather.wx);
+      var currentWeather = weather.forecast[0];
 
-    $(function() {
-      var BV = new $.BigVideo({doLoop: true});
-      BV.init();
-      BV.show(chrome.extension.getURL('/img/new-tab/' + WeatherTrends.mapWT2HackVideo(currentWeather.wx)));
+      $temp.text(WeatherTrends.formatTemp(currentWeather.avgTempF));
+      $desc.text(currentWeather.wx);
+
+      $(function() {
+        var BV = new $.BigVideo({doLoop: true});
+        BV.init();
+        BV.show(chrome.extension.getURL('/img/new-tab/' + WeatherTrends.mapWT2HackVideo(currentWeather.iconBase)), {ambient: true});
+      });
+
     });
+  };
 
-  });
-};
 
-setInterval(updateCachedWeatherData, 60000);
-updateCachedWeatherData();
+  setInterval(updateCachedWeatherData, 60000);
+  updateCachedWeatherData();
+
+});

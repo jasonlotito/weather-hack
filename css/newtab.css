@@ -57,13 +57,47 @@ html, body {
 }
 
 #searchContainer {
-    float: left;
     display: inline-block;
     margin-top: 25px;
     right: 25px;
-    width: auto;
+    width: 50%;
+    min-width: 350px;
+}
+
+#searchContainer form {
+    width: 100%;
 }
 
 #searchContainer input {
-    width: 100%;
+    float: left;
+    width: 60%;
+    border:none;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    font-size: 1.5em;
+    display: inline-block;
+    margin: 0;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+#searchContainer button {
+    display: inline-block;
+    margin:0;
+    width: auto;
+    border: none;
+    background-color: #fff;
+    opacity: 0.75;
+    font-size: 1.5em;
+    padding: 10px;
+    float: left;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+::-webkit-input-placeholder {
+    color: rgba(0,0,0,0.8);
+}
+::-webkit-input-placeholder:after {
+    content: '\2026'
 }

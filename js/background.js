@@ -1,5 +1,28 @@
 (function(){
 
+  var getCurrentPosition = function(){
+    navigator.geolocation.getCurrentPosition(function(loc){
+      var coords = loc.coords;
+      var lat = coords.latitude;
+      var long = coords.longitude;
+      location.set(lat,long);
+      fetchNewWeatherData(location.get());
+    });
+  };
+
+  var location = {
+    set: function(lat,long){
+      localStorage['location'] = JSON.stringify({lat: lat, long:long});
+    },
+    /**
+     *
+     * @returns {{lat: float, long: float}}
+     */
+    get: function(){
+      return JSON.parse(localStorage['location']);
+    }
+  }
+
   var w = new WeatherTrends();
 
   chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
@@ -26,11 +49,13 @@
 
         if(localStorage[settingName]){
           sendResponse(JSON.parse(localStorage[settingName]));
+          return;
         }
 
         if(request.defaultValue) {
           localStorage[settingName] = JSON.stringify(request.defaultValue);
           sendResponse(request.defaultValue);
+          return;
         }
 
         sendResponse();
@@ -39,17 +64,43 @@
   });
 
   setInterval( function(){
-    fetchNewWeatherData();
+    fetchNewWeatherData(location.get());
   }, 60000 * 5 );
 
-  var fetchNewWeatherData = function(cb){
-    w.getCurrentWeather(function(data){
+  var fetchNewWeatherData = function(loc, cb){
+    w.getCurrentWeather(loc || location.get(), function(data){
       localStorage['weather-trends-data'] = JSON.stringify(data);
+
+      var currentWeather = data.forecast[0];
+      var currentWeatherIcon = currentWeather.iconBase;
+
+
+      var descriptionText = WeatherTrends.formatTemp(currentWeather.avgTempF) + '˚ and ' + currentWeather.wx;
+
+
+      if( ! localStorage['lastWeatherDescription'] || localStorage['lastWeatherDescription'] !== descriptionText) {
+        chrome.notifications.create('weatherChanged', {
+          type:'basic',
+          title: 'Weather',
+          message: descriptionText,
+          iconUrl: chrome.extension.getURL('img/weather/colored/' + WeatherTrends.mapWT2Hack(currentWeatherIcon) + '.png')
+        }, function(e){
+
+        });
+
+        localStorage['lastWeatherDescription'] = descriptionText;
+      }
+
       cb && cb(data);
     })
   };
 
-  fetchNewWeatherData();
+  getCurrentPosition();
+
+  if(localStorage['location']){
+    fetchNewWeatherData(location.get());
+  }
+
 
 })();
 

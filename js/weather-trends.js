@@ -6,6 +6,7 @@ function WeatherTrends ()
 
 WeatherTrends.mapping = {
   'clear':'clear_night',
+  'mainly clear':'clear_night',
   'blowingdust': 'windy',
   'cloudy': 'sunny',
   'cloudy-windy': 'windy',
@@ -27,11 +28,11 @@ WeatherTrends.mapping = {
   'moon-isolated-thunder-shower': 'thunder',
   'moon-light-rain-shower': 'rain',
   'moon-light-snow-shower': 'sleet',
-  'moon-mostly-cloudy': 'partly_cloud_night',
-  'moon-mostly-cloudy-windy': 'partly_cloud_night',
-  'moon-partly-cloudy': 'partly_cloud_night',
-  'moon-partly-cloudy-windy': 'partly_cloud_night',
-  'moon-partly-sunny': 'parly_cloudy',
+  'moon-mostly-cloudy': 'partly_cloudy_night',
+  'moon-mostly-cloudy-windy': 'partly_cloudy_night',
+  'moon-partly-cloudy': 'partly_cloudy_night',
+  'moon-partly-cloudy-windy': 'partly_cloudy_night',
+  'moon-partly-sunny': 'partly_cloudy',
   'moon-partly-sunny-windy': 'windy',
   'moon-thunder-shower': 'thunder',
   'moon-windy': 'windy',
@@ -40,7 +41,7 @@ WeatherTrends.mapping = {
   'partly-cloudy': 'cloudy',
   'partly-cloudy-windy': 'cloudy',
   'partly-sunny': 'partly_cloudy',
-  'partly-sunny-windy': 'partly_coudy',
+  'partly-sunny-windy': 'partly_cloudy',
   'rain-shower-cloudy': 'rain',
   'sleet': 'sleet',
   'snow-shower-cloudy': 'snowing',
@@ -60,7 +61,9 @@ WeatherTrends.videoMapping = {
   "sunny":"Sunny/Sunny.mp4",
   "sleet":"Snow/Snow.mp4",
   "windy":"Cloudy/Cloudy.mp4",
+  "cloudy":"Cloudy/Cloudy.mp4",
   "snow": "Snow/Snow.mp4",
+  "foggy":"Foggy/Foggy.mp4",
   "rain":"Rain/Rain.mp4",
   "partly_cloud":"Cloudy/Cloudy.mp4",
   "thunder":"Rain/Rain.mp4",
@@ -68,9 +71,11 @@ WeatherTrends.videoMapping = {
   "clear_night":"Night/Night.mp4"
 };
 
-WeatherTrends.prototype.getCurrentWeather = function(cb)
+WeatherTrends.prototype.getCurrentWeather = function(loc, cb)
 {
-  $.get('http://www.weathertrends360.com/data/forecast/hourly-1day?key=g2frbigj3c8o4nl08mvizd5d9nrj0dzqfehqwyazahne60odvj&l=Bethlehem,PA&fmt=json', function(data){
+  var locationString = "" + loc.lat + " " + loc.long;
+  var url = 'http://polar-caverns-9154.herokuapp.com/weather/' + locationString;
+  $.get(url, function(data){
     cb(data);
   });
 };

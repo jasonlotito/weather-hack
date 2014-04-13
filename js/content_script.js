@@ -1,10 +1,14 @@
 
 $((function(){
 
-  function WeatherHack() {
+  function WeatherHack(options) {
 
     var font = document.createElement('link'),
+      oldDesc = '',
       that = this;
+
+    var isDialogOpen = options.showPopup;
+
     font.href = '//fonts.googleapis.com/css?family=Tauri';
     font.rel = 'stylesheet';
     font.type = 'text/css';
@@ -72,19 +76,21 @@ $((function(){
 
     var clickUp = function(e){
       shouldBeOpened = false;
-      e.preventDefault();
-      e.stopPropagation();
+      e && e.preventDefault();
+      e && e.stopPropagation();
       $closeIcon.hide();
       $openIcon.show();
+      chrome.extension.sendRequest({method: 'setSetting', settingName: 'isDialogOpen', settingValue: false});
       hideWeatherDialog();
     };
 
     var clickDown = function(e){
       shouldBeOpened = true;
-      e.preventDefault();
-      e.stopPropagation();
+      e && e.preventDefault();
+      e && e.stopPropagation();
       $closeIcon.show();
       $openIcon.hide();
+      chrome.extension.sendRequest({method:'setSetting', settingName: 'isDialogOpen', settingValue: true});
       showWeatherDialog();
     };
 
@@ -131,6 +137,10 @@ $((function(){
     this.root.appendChild(closeIcon);
     this.root.appendChild(this.weatherOverlay);
 
+    if(!isDialogOpen){
+      clickUp();
+    }
+
     document.body.appendChild(this.root);
 
     var $weatherDescription = $('#weather-hack .weatherhack-desc');
@@ -145,6 +155,8 @@ $((function(){
 
         var descriptionText = WeatherTrends.formatTemp(currentWeather.avgTempF) + '˚ and ' + currentWeather.wx;
 
+        oldDesc = descriptionText;
+
         $weatherDescription.text(descriptionText);
         $weatherIcon[0].src = chrome.extension.getURL('img/weather/colored/' + WeatherTrends.mapWT2Hack(currentWeatherIcon) + '.png');
       });
@@ -154,5 +166,7 @@ $((function(){
     updateWeatherDisplay();
   }
 
-  new WeatherHack();
+  chrome.extension.sendRequest({method:'getSetting', settingName: 'isDialogOpen', defaultValue: true}, function(isDialogOpen){
+    new WeatherHack({showPopup: !!isDialogOpen});
+  });
 }));
