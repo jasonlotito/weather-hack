@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "description": "Weather on your browser, creating during Lehigh Valley Hack 2014 - #lvhack",
-  "version": "1.0",
+  "version": "1.1",
 
   "browser_action": {
     "default_title": "Weather Hack",

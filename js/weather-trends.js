@@ -66,9 +66,11 @@ WeatherTrends.videoMapping = {
   "foggy":"Foggy/Foggy.mp4",
   "rain":"Rain/Rain.mp4",
   "partly_cloud":"Cloudy/Cloudy.mp4",
+  "partly_cloudy":"Cloudy/Cloudy.mp4",
   "thunder":"Rain/Rain.mp4",
   "night_foggy":"Night/Night.mp4",
-  "clear_night":"Night/Night.mp4"
+  "clear_night":"Night/Night.mp4",
+  "partly_cloudy_night":"Night/Night.mp4"
 };
 
 WeatherTrends.prototype.getCurrentWeather = function(loc, cb)
@@ -100,5 +102,15 @@ WeatherTrends.mapWT2Hack = function( wtName )
 WeatherTrends.mapWT2HackVideo = function ( wtName )
 {
   console.log(wtName, WeatherTrends.videoMapping);
-  return WeatherTrends.videoMapping[WeatherTrends.mapWT2Hack(wtName)];
+  var video = WeatherTrends.mapWT2Hack(wtName);
+  if(!WeatherTrends.videoMapping[video]){
+    return WeatherTrends.videoMapping[video];
+  } else {
+    if(video.indexOf('night') >= 0){
+      return WeatherTrends.videoMapping['partly_cloudy_night'];
+    } else {
+      return WeatherTrends.videoMapping['partly_cloudy'];
+    }
+
+  }
 };

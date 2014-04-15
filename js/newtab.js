@@ -4,14 +4,20 @@ $(function(){
   $desc = $('#weather-info .desc');
   $time = $('#time')
 
-
-
   var timeFormat = 'h:mm a';
   $time.text(moment().format(timeFormat));
 
   setInterval(function(){
     $time.text(moment().format(timeFormat));
   }, 1000);
+
+  var times;
+
+  WeatherHackLocation.get(function(location){
+    times = SunCalc.getTimes(new Date(), 51.5, -0.1);
+    console.log(times);
+  });
+
 
   setTimeout(function(){
     $('#flashCover').fadeOut( );
