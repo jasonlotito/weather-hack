@@ -36,7 +36,6 @@ $((function(){
     }.bind(this));
 
     window.addEventListener('mousemove', function(e){
-      e.preventDefault();
       if(mouseIsDown && isShowing){
         this.root.style.right = 'inherit';
         this.root.style.left = window.scrollX + (e.clientX - initialOffsetX) + 'px';
@@ -45,7 +44,6 @@ $((function(){
     }.bind(this));
 
     window.addEventListener('mouseup', function(e){
-      e.preventDefault();
       mouseIsDown = false;
       this.root.style.cursor = 'pointer';
     }.bind(this));
