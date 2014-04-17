@@ -45,4 +45,29 @@ $(function(){
   setInterval(updateCachedWeatherData, 60000);
   updateCachedWeatherData();
 
+  function buildPopupDom(mostVisitedURLs) {
+    var popupDiv = document.getElementById('mostVisited');
+    var ol = popupDiv.appendChild(document.createElement('ol'));
+
+    console.log(mostVisitedURLs);
+
+    function onAnchorClick(event) {
+      event.preventDefault();
+      chrome.tabs.create({ url: event.srcElement.href });
+      return false;
+    }
+
+    var maxLinksCount = mostVisitedURLs.length > 8 ? 8 : mostVisitedURLs.length;
+
+    for (var i = 0; i < maxLinksCount; i++) {
+      var li = ol.appendChild(document.createElement('li'));
+      var a = li.appendChild(document.createElement('a'));
+      a.href = mostVisitedURLs[i].url;
+      a.appendChild(document.createTextNode(mostVisitedURLs[i].title));
+      a.addEventListener('click', onAnchorClick);
+    }
+  }
+
+  chrome.topSites.get(buildPopupDom);
+
 });

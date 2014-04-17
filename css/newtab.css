@@ -8,6 +8,27 @@ html, body {
     background-size: cover;
 }
 
+#mostVisited {
+
+}
+
+#mostVisited a {
+    color: #fff;
+    text-decoration: none;
+
+}
+
+#mostVisited ol {
+    margin: 0;
+    padding: 0;
+}
+
+#mostVisited li {
+    list-style: none;
+    text-align: left;
+    margin: 10px 0;
+}
+
 #main, #flashCover {
     position: absolute;
     top: 0;
